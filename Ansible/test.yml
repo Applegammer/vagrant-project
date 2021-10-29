@@ -3,12 +3,24 @@
   become: yes
   
   tasks:
-  - name: Create file [test]
-    file:
-      path: /tmp/nowyplik.txt
-      state: touch
+  - name: Download jenkins-cli.jar
+    shell: wget http://192.168.8.4:8080/jnlpJars/jenkins-cli.jar
+
+  - name: Create script for cronetab.
+    shell: echo -e '#!/bin/bash\necho $(whoami)\necho $(java -jar /home/vagrant/jenkins-cli.jar -s http://192.168.8.4:8080 -auth devopsadmin:alamakota09 build my-project-test -s -v)' >> /home/vagrant/jenkins-job.sh
   
-  - name: Install the latest version of Apache
-    yum:
-      name: httpd
-      state: latest
+  - name: Create crontab file
+    file:
+      path: /home/vagrant/crontab
+      state: touch
+
+  - name: Put date to crontab
+    shell: echo '    */5 * * * * root sh /home/vagrant/jenkins-job.sh' >> /home/vagrant/crontab
+  
+  - name: Copy crontab to /etc
+    shell: cp /home/vagrant/crontab /etc/crontab
+
+  - name: Restart crond.service
+    systemd:
+      name: crond.service
+      state: restarted
