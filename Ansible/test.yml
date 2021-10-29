@@ -1,0 +1,14 @@
+- hosts: all
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - name: Create file [test]
+    file:
+      path: /tmp/nowyplik.txt
+      state: touch
+  
+  - name: Install the latest version of Apache
+    yum:
+      name: httpd
+      state: latest

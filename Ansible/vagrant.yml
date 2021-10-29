@@ -1,0 +1,40 @@
+- hosts: all
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+  - name: Create file [Testing]
+    file:
+      path: /tmp/vagrant.txt
+      state: touch
+  
+  - name: Update OS
+    yum:
+      name: '*'
+      state: latest
+
+  - name: Add Jenkins repository
+    yum_repository:
+      name: jenkins
+      description: Jenkins-stable
+      baseurl: https://pkg.jenkins.io/redhat-stable
+      enabled: yes
+      gpgcheck: yes
+      gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+  - name: Install required packages (epel-release, java-11-openjdk-devel)
+    yum:
+      name:
+      - epel-release
+      - java-11-openjdk-devel
+      state: latest
+
+  - name: Install Jenkins-stable
+    yum:
+      name: jenkins
+      state: latest
+
+  - name: Start Jenkins Service
+    systemd:
+      name: jenkins
+      state: started    
