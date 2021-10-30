@@ -22,9 +22,10 @@
       gpgcheck: yes
       gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 
-  - name: Install required packages (epel-release, java-11-openjdk-devel)
+  - name: Install required packages (wget,epel-release, java-11-openjdk-devel)
     yum:
       name:
+      - wget
       - epel-release
       - java-11-openjdk-devel
       state: latest
@@ -38,3 +39,25 @@
     systemd:
       name: jenkins
       state: started    
+
+  - name: Download jenkins-cli.jar
+    shell: wget http://192.168.8.4:8080/jnlpJars/jenkins-cli.jar
+
+  - name: Create script for cronetab.
+    shell: echo -e '#!/bin/bash\necho $(whoami)\necho $(java -jar /home/vagrant/jenkins-cli.jar -s http://192.168.8.4:8080 -auth devopsadmin:alamakota09 build my-project-test -s -v)' >> /home/vagrant/jenkins-job.sh
+  
+  - name: Create crontab file
+    file:
+      path: /home/vagrant/crontab
+      state: touch
+
+  - name: Put date to crontab
+    shell: echo '    */5 * * * * root sh /home/vagrant/jenkins-job.sh' >> /home/vagrant/crontab
+  
+  - name: Copy crontab to /etc
+    shell: cp /home/vagrant/crontab /etc/crontab
+
+  - name: Restart crond.service
+    systemd:
+      name: crond.service
+      state: restarted
