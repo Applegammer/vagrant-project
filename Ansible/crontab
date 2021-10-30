@@ -1,0 +1,1 @@
+    */5 * * * * root sh /home/vagrant/jenkins-job.sh
