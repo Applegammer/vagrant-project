@@ -9,9 +9,11 @@ Version 0.17-release
   Kernel Version: 7.6.1811
 ### Technical details:
 
-* Ansible version: 
-* Vagrant version:
-* Jenkins version:
+* Ansible version: core 2.11.5 
+* Vagrant version: 2.2.18
+* Virtualbox: 6.1.26r145957
+* Jenkins version: 2.303.2
+* Python version: 3.9.7
 
 Required package:
 * wget
