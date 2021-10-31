@@ -6,7 +6,7 @@ Version 0.17-release
   Kernel Version: 5.14.10-1-MANJARO (64-bit)
 ### VM Environment:
   Operating System: CentOS/7 <br>
-  Kernel Version: 7.6.1811
+  Kernel Version: 3.10.0-1160.45.1
 ### Technical details:
 
 * Ansible version: core 2.11.5 
