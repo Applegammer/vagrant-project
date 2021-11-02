@@ -1,5 +1,5 @@
 Vagrant project
-Version 0.17-release
+Version 0.17-release <br>
 #####################
 ### HOST Environment:
   Operating System: Manjaro Linux <br>
